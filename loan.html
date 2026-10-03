@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Выдача книги — BookNest</title>
+</head>
+<body>
+  <header>
+    <a href="index.html" aria-label="BookNest, на главную">BookNest</a>
+    <nav aria-label="Основная навигация">
+      <ul>
+        <li><a href="index.html">Каталог</a></li>
+        <li><a href="book.html">Карточка книги</a></li>
+        <li><a href="loan.html" aria-current="page">Выдача книги</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Выдача книги</h1>
+    <p>Заполните форму, чтобы взять книгу из каталога. Поля, отмеченные звёздочкой, обязательны.</p>
+
+    <form action="/api/loans" method="post">
+      <fieldset>
+        <legend>Данные читателя</legend>
+        <p>
+          <label for="reader">Имя и фамилия *</label>
+          <input id="reader" name="reader_name" type="text" required minlength="2" maxlength="80" autocomplete="name">
+        </p>
+        <p>
+          <label for="email">E-mail для напоминаний *</label>
+          <input id="email" name="email" type="email" required placeholder="student@university.kz" autocomplete="email">
+        </p>
+        <p>
+          <label for="phone">Телефон</label>
+          <input id="phone" name="phone" type="tel" pattern="\+?[0-9]{10,15}" title="От 10 до 15 цифр, можно с плюсом в начале" autocomplete="tel">
+        </p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Параметры выдачи</legend>
+        <p>
+          <label for="book">Книга *</label>
+          <select id="book" name="book_id" required>
+            <option value="">Выберите книгу</option>
+            <option value="1">Солярис</option>
+            <option value="2">Пикник на обочине</option>
+            <option value="3">Чистый код</option>
+            <option value="5">Евгений Онегин</option>
+            <option value="6">SPQR. История Древнего Рима</option>
+          </select>
+        </p>
+        <p>
+          <label for="due">Вернуть до *</label>
+          <input id="due" name="due_date" type="date" required min="2026-10-04">
+        </p>
+        <p>
+          <label for="copies">Количество экземпляров</label>
+          <input id="copies" name="copies" type="number" value="1" min="1" max="3">
+        </p>
+        <p>
+          <label for="note">Примечание</label>
+          <textarea id="note" name="note" rows="3" maxlength="300"></textarea>
+        </p>
+      </fieldset>
+
+      <p>
+        <input id="agree" name="agree" type="checkbox" value="1" required>
+        <label for="agree">Обязуюсь вернуть книгу в срок *</label>
+      </p>
+      <button type="submit">Выдать книгу</button>
+    </form>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Книжный клуб университета</p>
+  </footer>
+</body>
+</html>

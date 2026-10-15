@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Солярис — BookNest</title>
+</head>
+<body>
+  <header>
+    <a href="index.html" aria-label="BookNest, на главную">BookNest</a>
+    <nav aria-label="Основная навигация">
+      <ul>
+        <li><a href="index.html">Каталог</a></li>
+        <li><a href="book.html" aria-current="page">Карточка книги</a></li>
+        <li><a href="loan.html">Выдача книги</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <nav aria-label="Хлебные крошки">
+      <ol>
+        <li><a href="index.html">Каталог</a></li>
+        <li><a href="index.html">Фантастика</a></li>
+        <li aria-current="page">Солярис</li>
+      </ol>
+    </nav>
+
+    <article>
+      <h1>Солярис</h1>
+        
+    <figure>
+      <img src="img/cover-placeholder.svg" alt="Обложка книги «Солярис»" width="200" height="300">
+      <figcaption>Издание для читального зала, мягкая обложка</figcaption>
+    </figure>
+
+      <section aria-labelledby="specs-title">
+        <h2 id="specs-title">Характеристики</h2>
+        <dl>
+          <dt>Автор</dt>
+          <dd>Станислав Лем</dd>
+          <dt>Год издания</dt>
+          <dd><time datetime="1961">1961</time></dd>
+          <dt>Жанр</dt>
+          <dd>Фантастика</dd>
+          <dt>ISBN</dt>
+          <dd><code>9785171384562</code></dd>
+          <dt>Наличие</dt>
+          <dd>Доступно 3 экземпляра</dd>
+        </dl>
+        <p><a href="loan.html">Взять книгу</a></p>
+      </section>
+
+      <section aria-labelledby="desc-title">
+        <h2 id="desc-title">Описание</h2>
+        <p>Психолог Кельвин прибывает на станцию, которая исследует океан планеты Солярис. Океан оказывается мыслящим, а экипаж станции сталкивается с тем, что не поддаётся объяснению.</p>
+      </section>
+    </article>
+
+    <section aria-labelledby="reviews-title">
+      <h2 id="reviews-title">Отзывы читателей</h2>
+      <ul>
+        <li>
+          <article>
+            <h3>Отличная книга о границах познания</h3>
+            <p>Айдар, <time datetime="2026-09-14">14 сентября 2026</time> &middot; оценка 5 из 5</p>
+            <p>Читается медленно, но оставляет много вопросов для обсуждения.</p>
+          </article>
+        </li>
+        <li>
+          <article>
+            <h3>Сложно, но стоит времени</h3>
+            <p>Мария, <time datetime="2026-09-20">20 сентября 2026</time> &middot; оценка 4 из 5</p>
+            <p>Первые главы тяжёлые, дальше сюжет затягивает.</p>
+          </article>
+        </li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="new-review-title">
+      <h2 id="new-review-title">Оставить отзыв</h2>
+      <form action="/api/reviews" method="post">
+        <fieldset>
+          <legend>Ваша оценка</legend>
+          <input id="rate-1" name="rating" type="radio" value="1" required>
+          <label for="rate-1">1</label>
+          <input id="rate-2" name="rating" type="radio" value="2">
+          <label for="rate-2">2</label>
+          <input id="rate-3" name="rating" type="radio" value="3">
+          <label for="rate-3">3</label>
+          <input id="rate-4" name="rating" type="radio" value="4">
+          <label for="rate-4">4</label>
+          <input id="rate-5" name="rating" type="radio" value="5">
+          <label for="rate-5">5</label>
+        </fieldset>
+        <p>
+          <label for="review-author">Имя</label>
+          <input id="review-author" name="author" type="text" required minlength="2" maxlength="60" autocomplete="name">
+        </p>
+        <p>
+          <label for="review-text">Текст отзыва</label>
+          <textarea id="review-text" name="text" rows="5" required minlength="10" maxlength="1000"></textarea>
+        </p>
+        <button type="submit">Отправить отзыв</button>
+      </form>
+    </section>
+
+    <aside aria-labelledby="similar-title">
+      <h2 id="similar-title">Похожие книги</h2>
+      <ul>
+        <li>
+          <article>
+            <h3><a href="book.html">Пикник на обочине</a></h3>
+            <img src="img/cover-placeholder.svg" alt="Обложка книги «Пикник на обочине»" width="100" height="150">
+            <p>Аркадий и Борис Стругацкие, <time datetime="1972">1972</time></p>
+          </article>
+        </li>
+        <li>
+          <article>
+            <h3><a href="book.html">Гиперион</a></h3>
+            <img src="img/cover-placeholder.svg" alt="Обложка книги «Гиперион»" width="100" height="150">
+            <p>Дэн Симмонс, <time datetime="1989">1989</time></p>
+          </article>
+        </li>
+      </ul>
+    </aside>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Книжный клуб университета</p>
+  </footer>
+</body>
+</html>

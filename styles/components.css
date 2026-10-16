@@ -418,3 +418,39 @@
 .storage-message:empty {
   display: none;
 }
+
+.api-panel[hidden] {
+  display: none;
+}
+
+.api-panel:not([hidden]) {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--sp-5);
+}
+
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-4);
+}
+
+.btn:disabled {
+  color: var(--muted);
+  background: var(--surface-2);
+  border-color: var(--line);
+  cursor: not-allowed;
+}
+
+.book-card--interactive .book-card__title a {
+  display: inline;
+  border: 0;
+}
+
+.book__description-text {
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}

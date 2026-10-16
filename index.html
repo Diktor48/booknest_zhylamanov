@@ -39,7 +39,8 @@
       <form class="form filters__form" action="index.html" method="get">
         <p class="form__field">
           <label class="form__label" for="q">Название или автор</label>
-          <input class="form__input" id="q" name="q" type="search" maxlength="100" placeholder="Например, Солярис">
+          <input class="form__input" id="q" name="q" type="search" maxlength="100" minlength="2" placeholder="Например, Solaris или Tolkien" aria-describedby="search-hint">
+          <small id="search-hint">Введите минимум 2 символа. Поиск по Open Library.</small>
         </p>
         <p class="form__field">
           <label class="form__label" for="genre">Жанр</label>
@@ -55,6 +56,7 @@
         <p class="form__field">
           <label class="form__label" for="sort">Сортировка</label>
           <select class="form__select" id="sort" name="sort">
+            <option value="relevance">По соответствию запросу</option>
             <option value="title">По названию (А–Я)</option>
             <option value="year">По году (новые сначала)</option>
             <option value="rating">По рейтингу</option>
@@ -62,16 +64,28 @@
         </p>
         <p class="form__field form__field--check">
           <input class="form__check" id="available" name="available" type="checkbox" value="1">
-          <label class="form__label form__label--inline" for="available">Только доступные</label>
+          <label class="form__label form__label--inline" for="available">Можно читать бесплатно</label>
         </p>
         <button class="btn btn--ghost" type="reset">Сбросить</button>
       </form>
     </section>
 
-    <section class="catalog" aria-labelledby="list-title">
-      <h2 class="section-title" id="list-title" aria-live="polite" aria-atomic="true">Каталог книг</h2>
-      <p id="catalog-empty" hidden>Книги не найдены. Измените запрос или нажмите «Сбросить» в фильтрах.</p>
-      <ul class="catalog__list" id="catalog-list"></ul>
+    <section class="catalog" id="catalog-results" aria-labelledby="list-title" aria-busy="false">
+      <h2 class="section-title" id="list-title" aria-live="polite" aria-atomic="true">Результаты поиска</h2>
+      <p class="api-panel" data-catalog-state="loading" role="status" hidden>Загрузка книг из Open Library…</p>
+      <p class="api-panel" id="catalog-empty" data-catalog-state="empty" role="status">Введите не менее 2 символов для поиска в Open Library.</p>
+      <div class="api-panel" data-catalog-state="error" role="alert" hidden>
+        <p id="catalog-error-text"></p>
+        <button class="btn btn--primary" type="button" data-action="retry">Повторить</button>
+      </div>
+      <div class="api-panel" data-catalog-state="success" hidden>
+        <ul class="catalog__list" id="catalog-list"></ul>
+        <nav class="pagination" aria-label="Страницы результатов">
+          <button class="btn btn--ghost" type="button" data-action="previous" disabled>Назад</button>
+          <span id="page-info" role="status"></span>
+          <button class="btn btn--ghost" type="button" data-action="next" disabled>Далее</button>
+        </nav>
+      </div>
     </section>
     <section class="wishlist" id="wishlist" aria-labelledby="wishlist-title">
       <h2 class="section-title" id="wishlist-title" tabindex="-1" aria-live="polite" aria-atomic="true">Мой список: 0</h2>

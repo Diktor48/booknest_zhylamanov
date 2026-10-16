@@ -1,61 +1,119 @@
-import { books, genres } from './data/books.js';
-import { defaultFilters, restoreSaved, toggleWishlist } from './lib/books.js';
+import { MIN_QUERY_LENGTH, searchBooks } from './api/books.js';
+import { errorMessage } from './api/client.js';
+import { defaultFilters } from './lib/books.js';
+import { readSaved, saveCurrent } from './storage.js';
 import { render } from './ui/render.js';
 
-const storageKey = 'booknest:catalog:v1';
 const state = {
-  filters: defaultFilters(),
-  wishlist: [],
-  storageError: '',
+  ...readSaved(),
+  status: 'empty', loading: false, books: [], total: 0, page: 1,
+  error: '', emptyMessage: `Введите не менее ${MIN_QUERY_LENGTH} символов для поиска в Open Library.`,
 };
-
-try {
-  Object.assign(state, restoreSaved(JSON.parse(localStorage.getItem(storageKey)), books, genres));
-} catch {
-  // Повреждённый JSON или запрет хранилища не мешает пользоваться каталогом.
-  state.storageError = 'Не удалось прочитать сохранённые данные. Используются начальные настройки.';
-}
-
-function update() {
-  try {
-    localStorage.setItem(storageKey, JSON.stringify({ filters: state.filters, wishlist: state.wishlist }));
-    state.storageError = '';
-  } catch {
-    state.storageError = 'Сохранение недоступно. Изменения действуют до перезагрузки страницы.';
-  }
-  render(state);
-}
-
 const form = document.querySelector('.filters__form');
+let controller;
+let debounceTimer;
+let requestNumber = 0;
 
-// input всплывает от всех полей: один обработчик для комбинации фильтров.
-form.addEventListener('input', () => {
+function cancelSearch() {
+  clearTimeout(debounceTimer);
+  requestNumber += 1;
+  controller?.abort();
+}
+
+async function loadBooks() {
+  cancelSearch();
+  const number = requestNumber;
+  if (state.filters.query.trim().length < MIN_QUERY_LENGTH) {
+    state.status = 'empty';
+    state.loading = false;
+    state.books = [];
+    state.total = 0;
+    state.emptyMessage = `Введите не менее ${MIN_QUERY_LENGTH} символов для поиска в Open Library.`;
+    render(state);
+    return;
+  }
+  controller = new AbortController();
+  const signal = controller.signal;
+  state.status = 'loading';
+  state.loading = true;
+  state.error = '';
+  render(state);
+  try {
+    const result = await searchBooks(state.filters, state.page, signal);
+    if (number !== requestNumber) return;
+    state.books = result.books;
+    state.total = result.total;
+    state.status = state.books.length ? 'success' : 'empty';
+    state.emptyMessage = 'Книги не найдены. Измените запрос или сбросьте фильтры.';
+  } catch (error) {
+    if (number !== requestNumber || error.name === 'AbortError') return;
+    state.status = 'error';
+    state.error = errorMessage(error);
+    state.books = [];
+    state.total = 0;
+  } finally {
+    // Старый запрос не должен снимать загрузку нового.
+    if (number === requestNumber) {
+      state.loading = false;
+      render(state);
+    }
+  }
+}
+
+form.addEventListener('input', event => {
+  cancelSearch();
   state.filters = {
-    query: form.elements.q.value,
-    genre: form.elements.genre.value,
-    sort: form.elements.sort.value,
-    available: form.elements.available.checked,
+    query: form.elements.q.value, genre: form.elements.genre.value,
+    sort: form.elements.sort.value, available: form.elements.available.checked,
   };
-  update();
+  state.page = 1;
+  saveCurrent(state);
+  if (state.filters.query.trim().length < MIN_QUERY_LENGTH) {
+    void loadBooks();
+    return;
+  }
+  state.status = 'loading';
+  state.loading = true;
+  render(state);
+  if (event.target.name === 'q') debounceTimer = setTimeout(loadBooks, 350);
+  else void loadBooks();
 });
 
-form.addEventListener('submit', event => event.preventDefault());
+form.addEventListener('submit', event => {
+  event.preventDefault();
+  void loadBooks();
+});
 form.addEventListener('reset', event => {
   event.preventDefault();
   state.filters = defaultFilters();
-  update();
+  state.page = 1;
+  saveCurrent(state);
+  void loadBooks();
 });
 
-// Делегирование: обработчик остаётся на main при перерисовке карточек.
 document.querySelector('main').addEventListener('click', event => {
-  const button = event.target.closest('button[data-book-id]');
-  if (!button) return;
-  const id = Number(button.dataset.bookId);
-  if (!books.some(book => book.id === id)) return;
-  state.wishlist = button.dataset.action === 'remove'
-    ? state.wishlist.filter(item => item !== id)
-    : toggleWishlist(state.wishlist, id);
-  update();
+  const action = event.target.closest('button[data-action]');
+  if (!action || action.disabled) return;
+  if (action.dataset.action === 'retry') { void loadBooks(); return; }
+  if (action.dataset.action === 'previous' || action.dataset.action === 'next') {
+    state.page += action.dataset.action === 'next' ? 1 : -1;
+    void loadBooks();
+    return;
+  }
+  const id = action.dataset.bookId;
+  const selected = state.wishlist.some(book => book.id === id);
+  const book = state.books.find(item => item.id === id);
+  if (selected) state.wishlist = state.wishlist.filter(item => item.id !== id);
+  else if (book && action.dataset.action === 'toggle') state.wishlist = [...state.wishlist, book];
+  saveCurrent(state);
+  render(state);
 });
 
-render(state);
+window.addEventListener('storage', () => {
+  const saved = readSaved();
+  state.wishlist = saved.wishlist;
+  state.storageError = saved.storageError;
+  render(state);
+});
+
+void loadBooks();

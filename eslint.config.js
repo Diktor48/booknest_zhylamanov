@@ -1,21 +1,20 @@
 import js from '@eslint/js';
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
 
-// Базовая конфигурация проекта; конфигурация преподавателя не приложена.
-export default [
-  js.configs.recommended,
+export default tseslint.config(
+  { ignores: ['dist/**', 'node_modules/**'] },
   {
-    files: ['**/*.js'],
-    languageOptions: {
-      ecmaVersion: 'latest',
-      sourceType: 'module',
-      globals: {
-        document: 'readonly', localStorage: 'readonly', navigator: 'readonly',
-        fetch: 'readonly', URL: 'readonly', URLSearchParams: 'readonly',
-        AbortController: 'readonly', DOMException: 'readonly',
-        setTimeout: 'readonly', clearTimeout: 'readonly',
-        location: 'readonly', window: 'readonly',
-      },
+    files: ['**/*.{ts,tsx}'],
+    extends: [js.configs.recommended, ...tseslint.configs.recommended],
+    languageOptions: { ecmaVersion: 'latest', globals: { ...globals.browser, ...globals.node } },
+    plugins: { 'react-hooks': reactHooks, 'react-refresh': reactRefresh },
+    rules: {
+      ...reactHooks.configs.recommended.rules,
+      'react-refresh/only-export-components': ['error', { allowConstantExport: true }],
+      '@typescript-eslint/no-explicit-any': 'error',
     },
-    rules: { eqeqeq: 'error', 'no-var': 'error', 'prefer-const': 'error' },
   },
-];
+);

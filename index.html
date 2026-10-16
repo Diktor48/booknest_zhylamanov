@@ -10,92 +10,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 
-  <link rel="stylesheet" href="styles/tokens.css">
-  <link rel="stylesheet" href="styles/base.css">
-  <link rel="stylesheet" href="styles/layout.css">
-  <link rel="stylesheet" href="styles/components.css">
-  <script type="module" src="main.js"></script>
+  <script type="module" src="/src/main.tsx"></script>
 </head>
-<body class="page">
-  <header class="site-header">
-    <a class="site-logo" href="index.html" aria-label="BookNest, на главную">BookNest</a>
-    <nav class="site-nav" aria-label="Основная навигация">
-      <ul class="site-nav__list">
-        <li><a class="site-nav__link" href="index.html" aria-current="page">Каталог</a></li>
-        <li><a class="site-nav__link" href="book.html">Карточка книги</a></li>
-        <li><a class="site-nav__link" href="loan.html">Выдача книги</a></li>
-        <li><a class="site-nav__link" href="#wishlist">Мой список (<span id="wishlist-count">0</span>)</a></li>
-      </ul>
-    </nav>
-  </header>
-
-  <main class="site-main catalog-page">
-    <h1 class="page-title">Каталог книг</h1>
-    <p class="storage-message" id="storage-message" role="status"></p>
-    <noscript>Для поиска и списка желаемого включите JavaScript.</noscript>
-
-    <section class="filters" aria-labelledby="filters-title">
-      <h2 class="section-title" id="filters-title">Фильтры</h2>
-      <form class="form filters__form" action="index.html" method="get">
-        <p class="form__field">
-          <label class="form__label" for="q">Название или автор</label>
-          <input class="form__input" id="q" name="q" type="search" maxlength="100" minlength="2" placeholder="Например, Solaris или Tolkien" aria-describedby="search-hint">
-          <small id="search-hint">Введите минимум 2 символа. Поиск по Open Library.</small>
-        </p>
-        <p class="form__field">
-          <label class="form__label" for="genre">Жанр</label>
-          <select class="form__select" id="genre" name="genre">
-            <option value="all">Все жанры</option>
-            <option value="scifi">Фантастика</option>
-            <option value="history">История</option>
-            <option value="poetry">Поэзия</option>
-            <option value="cs">Информатика</option>
-            <option value="classic">Классика</option>
-          </select>
-        </p>
-        <p class="form__field">
-          <label class="form__label" for="sort">Сортировка</label>
-          <select class="form__select" id="sort" name="sort">
-            <option value="relevance">По соответствию запросу</option>
-            <option value="title">По названию (А–Я)</option>
-            <option value="year">По году (новые сначала)</option>
-            <option value="rating">По рейтингу</option>
-          </select>
-        </p>
-        <p class="form__field form__field--check">
-          <input class="form__check" id="available" name="available" type="checkbox" value="1">
-          <label class="form__label form__label--inline" for="available">Можно читать бесплатно</label>
-        </p>
-        <button class="btn btn--ghost" type="reset">Сбросить</button>
-      </form>
-    </section>
-
-    <section class="catalog" id="catalog-results" aria-labelledby="list-title" aria-busy="false">
-      <h2 class="section-title" id="list-title" aria-live="polite" aria-atomic="true">Результаты поиска</h2>
-      <p class="api-panel" data-catalog-state="loading" role="status" hidden>Загрузка книг из Open Library…</p>
-      <p class="api-panel" id="catalog-empty" data-catalog-state="empty" role="status">Введите не менее 2 символов для поиска в Open Library.</p>
-      <div class="api-panel" data-catalog-state="error" role="alert" hidden>
-        <p id="catalog-error-text"></p>
-        <button class="btn btn--primary" type="button" data-action="retry">Повторить</button>
-      </div>
-      <div class="api-panel" data-catalog-state="success" hidden>
-        <ul class="catalog__list" id="catalog-list"></ul>
-        <nav class="pagination" aria-label="Страницы результатов">
-          <button class="btn btn--ghost" type="button" data-action="previous" disabled>Назад</button>
-          <span id="page-info" role="status"></span>
-          <button class="btn btn--ghost" type="button" data-action="next" disabled>Далее</button>
-        </nav>
-      </div>
-    </section>
-    <section class="wishlist" id="wishlist" aria-labelledby="wishlist-title">
-      <h2 class="section-title" id="wishlist-title" tabindex="-1" aria-live="polite" aria-atomic="true">Мой список: 0</h2>
-      <p id="wishlist-empty">Список пока пуст. Нажмите «Хочу прочитать» на карточке книги.</p>
-      <ul class="catalog__list" id="wishlist-list"></ul>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <p>&copy; 2026 Книжный клуб университета</p>
-  </footer>
+<body>
+  <div id="root"></div>
+  <noscript>Для работы BookNest включите JavaScript.</noscript>
 </body>
 </html>

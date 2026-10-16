@@ -43,7 +43,7 @@
   --accent:       #1B4D8F;
   --accent-ink:   #12386B;
   --accent-soft:  #E5EDF8;
-  --ok:           #2E7D4F;
+  --ok:           #24663F;
   --warn:         #8E6208;
   --crit:         #AE3628;
 
@@ -87,6 +87,8 @@
 
   --dur-fast: 120ms;
   --dur:      200ms;
+  --dur-spin: 1000ms;
+  --spinner-size: 1.25rem;
   --ease:     cubic-bezier(0.2, 0, 0, 1);
 }
 

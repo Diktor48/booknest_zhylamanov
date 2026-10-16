@@ -454,3 +454,31 @@
   white-space: pre-line;
   overflow-wrap: anywhere;
 }
+
+.badge {
+  font-size: var(--fs-sm);
+  color: var(--muted);
+}
+
+.badge--positive {
+  color: var(--ok);
+}
+
+.storage-notice {
+  padding: var(--sp-4) var(--sp-5);
+  background: var(--surface-2);
+  color: var(--ink-2);
+}
+
+.spinner-mark {
+  width: var(--spinner-size);
+  height: var(--spinner-size);
+  border: var(--focus-width) solid var(--line);
+  border-top-color: var(--accent);
+  border-radius: var(--radius-pill);
+  animation: spinner-turn var(--dur-spin) linear infinite;
+}
+
+@keyframes spinner-turn {
+  to { transform: rotate(1turn); }
+}

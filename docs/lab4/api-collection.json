@@ -1,0 +1,46 @@
+{
+  "info": {
+    "name": "BookNest — Open Library (Lab 4)",
+    "description": "Поиск (20 записей), детали произведения, метаданные по ID и проверка 404. Импорт в Postman. GET-запросы без авторизации.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "https://openlibrary.org" },
+    { "key": "query", "value": "tolkien" },
+    { "key": "workId", "value": "OL45804W" }
+  ],
+  "item": [
+    {
+      "name": "Поиск — первая страница из 20 книг",
+      "request": { "method": "GET", "url": "{{baseUrl}}/search.json?q={{query}}&page=1&limit=20&fields=key,title,author_name,first_publish_year,cover_i,ratings_average,ebook_access&lang=ru" },
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+        "pm.test('Успешный поиск: HTTP 200', () => pm.response.to.have.status(200));",
+        "pm.test('Возвращено 20 книг с идентификаторами', () => { const data = pm.response.json(); pm.expect(data.docs).to.have.lengthOf(20); data.docs.forEach(book => pm.expect(book.key).to.be.a('string')); });"
+      ] } }]
+    },
+    {
+      "name": "Описание произведения по ID",
+      "request": { "method": "GET", "url": "{{baseUrl}}/works/{{workId}}.json" },
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+        "pm.test('Детали книги: HTTP 200', () => pm.response.to.have.status(200));",
+        "pm.test('У книги есть название', () => pm.expect(pm.response.json().title).to.be.a('string').and.not.empty);"
+      ] } }]
+    },
+    {
+      "name": "Метаданные произведения по ID",
+      "request": { "method": "GET", "url": "{{baseUrl}}/search.json?q=key%3A%2Fworks%2F{{workId}}&limit=1&fields=key,title,author_name,first_publish_year,cover_i,ratings_average,ebook_access" },
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+        "pm.test('Метаданные: HTTP 200', () => pm.response.to.have.status(200));",
+        "pm.test('Получено выбранное произведение', () => { const data = pm.response.json(); pm.expect(data.docs).to.have.lengthOf(1); pm.expect(data.docs[0].key).to.eql('/works/' + pm.collectionVariables.get('workId')); });"
+      ] } }]
+    },
+    {
+      "name": "Несуществующий ресурс — ожидается HTTP 404",
+      "request": { "method": "GET", "url": "{{baseUrl}}/works/OL0W.json" },
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+        "pm.test('Несуществующая книга: HTTP 404', () => pm.response.to.have.status(404));",
+        "pm.test('Ошибка возвращена в JSON', () => pm.expect(pm.response.json()).to.be.an('object'));"
+      ] } }]
+    }
+  ]
+}

@@ -118,6 +118,12 @@
   .catalog-page .catalog {
     grid-column: 2;
   }
+
+  .catalog-page .wishlist,
+  .catalog-page .storage-message,
+  .catalog-page noscript {
+    grid-column: 1 / -1;
+  }
 }
 
 .site-main > *,

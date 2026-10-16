@@ -3,131 +3,74 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Солярис — BookNest</title>
+  <title>Карточка книги — BookNest</title>
+  <link rel="icon" href="img/cover-placeholder.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/layout.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <script type="module" src="book.js"></script>
 </head>
-<body>
-  <header>
-    <a href="index.html" aria-label="BookNest, на главную">BookNest</a>
-    <nav aria-label="Основная навигация">
-      <ul>
-        <li><a href="index.html">Каталог</a></li>
-        <li><a href="book.html" aria-current="page">Карточка книги</a></li>
-        <li><a href="loan.html">Выдача книги</a></li>
+<body class="page">
+  <header class="site-header">
+    <a class="site-logo" href="index.html" aria-label="BookNest, на главную">BookNest</a>
+    <nav class="site-nav" aria-label="Основная навигация">
+      <ul class="site-nav__list">
+        <li><a class="site-nav__link" href="index.html">Каталог</a></li>
+        <li><a class="site-nav__link" href="book.html" aria-current="page">Карточка книги</a></li>
+        <li><a class="site-nav__link" href="loan.html">Выдача книги</a></li>
+        <li><a class="site-nav__link" href="index.html#wishlist">Мой список (<span id="wishlist-count">0</span>)</a></li>
       </ul>
     </nav>
   </header>
 
-  <main>
-    <nav aria-label="Хлебные крошки">
-      <ol>
-        <li><a href="index.html">Каталог</a></li>
-        <li><a href="index.html">Фантастика</a></li>
-        <li aria-current="page">Солярис</li>
+  <main class="site-main book-page">
+    <nav class="breadcrumbs" aria-label="Хлебные крошки">
+      <ol class="breadcrumbs__list">
+        <li class="breadcrumbs__item"><a href="index.html">Каталог</a></li>
+        <li class="breadcrumbs__item" id="book-breadcrumb" aria-current="page">Карточка книги</li>
       </ol>
     </nav>
+    <h1 class="page-title" id="book-title">Карточка книги</h1>
+    <p class="storage-message" id="storage-message" role="status"></p>
+    <noscript>Для загрузки книги включите JavaScript и откройте страницу через Live Server.</noscript>
 
-    <article>
-      <h1>Солярис</h1>
-        
-    <figure>
-      <img src="img/cover-placeholder.svg" alt="Обложка книги «Солярис»" width="200" height="300">
-      <figcaption>Издание для читального зала, мягкая обложка</figcaption>
-    </figure>
-
-      <section aria-labelledby="specs-title">
-        <h2 id="specs-title">Характеристики</h2>
-        <dl>
-          <dt>Автор</dt>
-          <dd>Станислав Лем</dd>
-          <dt>Год издания</dt>
-          <dd><time datetime="1961">1961</time></dd>
-          <dt>Жанр</dt>
-          <dd>Фантастика</dd>
-          <dt>ISBN</dt>
-          <dd><code>9785171384562</code></dd>
-          <dt>Наличие</dt>
-          <dd>Доступно 3 экземпляра</dd>
-        </dl>
-        <p><a href="loan.html">Взять книгу</a></p>
-      </section>
-
-      <section aria-labelledby="desc-title">
-        <h2 id="desc-title">Описание</h2>
-        <p>Психолог Кельвин прибывает на станцию, которая исследует океан планеты Солярис. Океан оказывается мыслящим, а экипаж станции сталкивается с тем, что не поддаётся объяснению.</p>
-      </section>
-    </article>
-
-    <section aria-labelledby="reviews-title">
-      <h2 id="reviews-title">Отзывы читателей</h2>
-      <ul>
-        <li>
-          <article>
-            <h3>Отличная книга о границах познания</h3>
-            <p>Айдар, <time datetime="2026-09-14">14 сентября 2026</time> &middot; оценка 5 из 5</p>
-            <p>Читается медленно, но оставляет много вопросов для обсуждения.</p>
-          </article>
-        </li>
-        <li>
-          <article>
-            <h3>Сложно, но стоит времени</h3>
-            <p>Мария, <time datetime="2026-09-20">20 сентября 2026</time> &middot; оценка 4 из 5</p>
-            <p>Первые главы тяжёлые, дальше сюжет затягивает.</p>
-          </article>
-        </li>
-      </ul>
+    <section id="book-region" aria-label="Данные книги" aria-busy="true">
+      <p class="api-panel" data-book-state="loading" role="status">Загрузка книги…</p>
+      <p class="api-panel" data-book-state="empty" role="status" hidden>Выберите книгу в <a href="index.html">каталоге</a>: откройте ссылку с её названием.</p>
+      <div class="api-panel" data-book-state="error" role="alert" hidden>
+        <p id="book-error-text"></p>
+        <button class="btn btn--primary" id="book-retry" type="button">Повторить</button>
+        <a href="index.html">Вернуться в каталог</a>
+      </div>
+      <article class="book api-panel" data-book-state="success" hidden>
+        <figure class="book__cover">
+          <span id="book-cover"></span>
+          <figcaption class="book__caption">Обложка из Open Library</figcaption>
+        </figure>
+        <section class="book__specs" aria-labelledby="specs-title">
+          <h2 class="section-title" id="specs-title">Характеристики</h2>
+          <dl class="specs">
+            <dt class="specs__term">Автор</dt><dd class="specs__value" id="book-author"></dd>
+            <dt class="specs__term">Первое издание</dt><dd class="specs__value" id="book-year"></dd>
+            <dt class="specs__term">Рейтинг</dt><dd class="specs__value" id="book-rating"></dd>
+            <dt class="specs__term">Чтение онлайн</dt><dd class="specs__value" id="book-access"></dd>
+            <dt class="specs__term">Темы</dt><dd class="specs__value" id="book-subjects"></dd>
+          </dl>
+          <button class="btn btn--ghost book-card__wish" id="book-wish" type="button" aria-pressed="false">Хочу прочитать</button>
+          <p><a id="book-source">Открыть книгу в Open Library</a></p>
+        </section>
+        <section class="book__description" aria-labelledby="desc-title">
+          <h2 class="section-title" id="desc-title">Описание</h2>
+          <p class="book__description-text" id="book-description"></p>
+        </section>
+      </article>
     </section>
-
-    <section aria-labelledby="new-review-title">
-      <h2 id="new-review-title">Оставить отзыв</h2>
-      <form action="/api/reviews" method="post">
-        <fieldset>
-          <legend>Ваша оценка</legend>
-          <input id="rate-1" name="rating" type="radio" value="1" required>
-          <label for="rate-1">1</label>
-          <input id="rate-2" name="rating" type="radio" value="2">
-          <label for="rate-2">2</label>
-          <input id="rate-3" name="rating" type="radio" value="3">
-          <label for="rate-3">3</label>
-          <input id="rate-4" name="rating" type="radio" value="4">
-          <label for="rate-4">4</label>
-          <input id="rate-5" name="rating" type="radio" value="5">
-          <label for="rate-5">5</label>
-        </fieldset>
-        <p>
-          <label for="review-author">Имя</label>
-          <input id="review-author" name="author" type="text" required minlength="2" maxlength="60" autocomplete="name">
-        </p>
-        <p>
-          <label for="review-text">Текст отзыва</label>
-          <textarea id="review-text" name="text" rows="5" required minlength="10" maxlength="1000"></textarea>
-        </p>
-        <button type="submit">Отправить отзыв</button>
-      </form>
-    </section>
-
-    <aside aria-labelledby="similar-title">
-      <h2 id="similar-title">Похожие книги</h2>
-      <ul>
-        <li>
-          <article>
-            <h3><a href="book.html">Пикник на обочине</a></h3>
-            <img src="img/cover-placeholder.svg" alt="Обложка книги «Пикник на обочине»" width="100" height="150">
-            <p>Аркадий и Борис Стругацкие, <time datetime="1972">1972</time></p>
-          </article>
-        </li>
-        <li>
-          <article>
-            <h3><a href="book.html">Гиперион</a></h3>
-            <img src="img/cover-placeholder.svg" alt="Обложка книги «Гиперион»" width="100" height="150">
-            <p>Дэн Симмонс, <time datetime="1989">1989</time></p>
-          </article>
-        </li>
-      </ul>
-    </aside>
   </main>
 
-  <footer>
-    <p>&copy; 2026 Книжный клуб университета</p>
-  </footer>
+  <footer class="site-footer"><p>&copy; 2026 Книжный клуб университета</p></footer>
 </body>
 </html>

@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "lint": "eslint data lib ui main.js"
+    "lint": "eslint data lib ui api main.js book.js storage.js"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

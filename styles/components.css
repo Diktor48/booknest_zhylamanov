@@ -8,7 +8,7 @@
 
 .catalog__list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--card-min)), 1fr));
   gap: var(--sp-5);
 }
 
@@ -19,7 +19,7 @@
   height: 100%;
   padding: var(--sp-4);
   background: var(--surface);
-  border: 1px solid var(--line);
+  border: var(--border-thin) solid var(--line);
   border-radius: var(--radius);
   box-shadow: var(--shadow-sm);
   transition: box-shadow var(--dur) var(--ease),
@@ -28,13 +28,13 @@
 
 .book-card:hover {
   box-shadow: var(--shadow);
-  transform: translateY(-2px);
+  transform: translateY(var(--hover-shift));
 }
 
 .book-card__title {
   font-size: var(--fs-lg);
   font-family: var(--font-sans);
-  font-weight: 600;
+  font-weight: var(--weight-bold);
 }
 
 .book-card__title a {
@@ -48,8 +48,8 @@
 
 .book-card__cover {
   width: 100%;
-  max-width: 150px;
-  aspect-ratio: 2 / 3;
+  max-width: var(--cover-width);
+  aspect-ratio: var(--cover-ratio);
   object-fit: cover;
   border-radius: var(--radius-sm);
   background: var(--surface-3);
@@ -62,9 +62,8 @@
 }
 
 .book-card__status {
-  margin-top: auto;
   padding-top: var(--sp-2);
-  border-top: 1px solid var(--line-soft);
+  border-top: var(--border-thin) solid var(--line-soft);
   color: var(--ink-2);
 }
 
@@ -81,13 +80,12 @@
 
 .breadcrumbs__item + .breadcrumbs__item::before {
   content: "/";
-  margin-right: var(--sp-2);
   color: var(--line);
 }
 
 .specs {
   display: grid;
-  grid-template-columns: max-content 1fr;
+  grid-template-columns: max-content minmax(0, 1fr);
   gap: var(--sp-2) var(--sp-5);
   margin: 0;
 }
@@ -130,8 +128,8 @@
 .review {
   padding: var(--sp-4);
   background: var(--surface);
-  border: 1px solid var(--line-soft);
-  border-left: 3px solid var(--accent);
+  border: var(--border-thin) solid var(--line-soft);
+  border-left: var(--border-strong) solid var(--accent);
   border-radius: 0 var(--radius) var(--radius) 0;
   display: flex;
   flex-direction: column;
@@ -141,7 +139,7 @@
 .review__title {
   font-family: var(--font-sans);
   font-size: var(--fs-base);
-  font-weight: 600;
+  font-weight: var(--weight-bold);
 }
 
 .review__meta {
@@ -151,14 +149,14 @@
 
 .similar__list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--similar-min)), 1fr));
   gap: var(--sp-4);
 }
 
 .mini-card {
   padding: var(--sp-3);
   background: var(--surface);
-  border: 1px solid var(--line-soft);
+  border: var(--border-thin) solid var(--line-soft);
   border-radius: var(--radius);
   display: flex;
   flex-direction: column;
@@ -167,7 +165,7 @@
 
 .mini-card__cover {
   width: 100%;
-  aspect-ratio: 2 / 3;
+  aspect-ratio: var(--cover-ratio);
   object-fit: cover;
   border-radius: var(--radius-sm);
   background: var(--surface-3);
@@ -176,7 +174,7 @@
 .mini-card__title {
   font-family: var(--font-sans);
   font-size: var(--fs-base);
-  font-weight: 600;
+  font-weight: var(--weight-bold);
 }
 
 .mini-card__meta {
@@ -191,8 +189,8 @@
 }
 
 .form__group {
-  position: relative;
-  border: 1px solid var(--line);
+  min-width: 0;
+  border: var(--border-thin) solid var(--line);
   border-radius: var(--radius);
   padding: var(--sp-5);
   padding-top: var(--sp-6);
@@ -203,14 +201,10 @@
 }
 
 .form__legend {
-  position: absolute;
-  top: 0;
-  left: var(--sp-4);
-  transform: translateY(-50%);
   padding: 0 var(--sp-2);
   background: var(--paper);
   font-family: var(--font-serif);
-  font-weight: 600;
+  font-weight: var(--weight-bold);
   font-size: var(--fs-lg);
   color: var(--ink);
   line-height: 1;
@@ -232,13 +226,13 @@
 
 .form__label {
   font-size: var(--fs-sm);
-  font-weight: 500;
+  font-weight: var(--weight-medium);
   color: var(--ink-2);
 }
 
 .form__label--inline {
   font-size: var(--fs-base);
-  font-weight: 400;
+  font-weight: var(--weight-normal);
   color: var(--ink);
 }
 
@@ -249,7 +243,7 @@
   padding: var(--sp-3) var(--sp-4);
   background: var(--surface);
   color: var(--ink);
-  border: 1px solid var(--line);
+  border: var(--border-thin) solid var(--line);
   border-radius: var(--radius);
   font-size: var(--fs-base);
   transition: border-color var(--dur-fast) var(--ease),
@@ -263,11 +257,11 @@
 }
 
 .form__input:focus-visible,
+.form__input:focus-within,
 .form__select:focus-visible,
 .form__textarea:focus-visible {
-  outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-soft);
+  box-shadow: 0 0 0 var(--border-strong) var(--accent-soft);
 }
 
 .form__input:disabled,
@@ -280,26 +274,26 @@
 
 .form__textarea {
   resize: vertical;
-  min-height: 5rem;
+  min-height: var(--textarea-min);
   font-family: inherit;
 }
 
 .form__select {
   appearance: none;
   background-image:
-    linear-gradient(45deg, transparent 50%, var(--muted) 50%),
-    linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+    linear-gradient(var(--select-angle), transparent 50%, var(--muted) 50%),
+    linear-gradient(var(--select-angle-end), var(--muted) 50%, transparent 50%);
   background-position:
-    calc(100% - 18px) calc(50% - 2px),
-    calc(100% - 12px) calc(50% - 2px);
-  background-size: 6px 6px, 6px 6px;
+    calc(100% - var(--select-arrow-far)) calc(50% - var(--select-arrow-offset)),
+    calc(100% - var(--select-arrow-near)) calc(50% - var(--select-arrow-offset));
+  background-size: var(--select-arrow-size) var(--select-arrow-size), var(--select-arrow-size) var(--select-arrow-size);
   background-repeat: no-repeat;
   padding-right: var(--sp-7);
 }
 
 .form__check {
-  width: 1.15em;
-  height: 1.15em;
+  width: var(--check-size);
+  height: var(--check-size);
   margin: 0;
   accent-color: var(--accent);
 }
@@ -313,7 +307,7 @@
 .form__input:user-invalid:focus-visible,
 .form__select:user-invalid:focus-visible,
 .form__textarea:user-invalid:focus-visible {
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--crit) 25%, transparent);
+  box-shadow: 0 0 0 var(--border-strong) color-mix(in srgb, var(--crit) var(--error-tint), transparent);
 }
 
 .form__actions {
@@ -328,8 +322,8 @@
   padding: var(--sp-3) var(--sp-5);
   border-radius: var(--radius);
   font-size: var(--fs-base);
-  font-weight: 500;
-  border: 1px solid transparent;
+  font-weight: var(--weight-medium);
+  border: var(--border-thin) solid transparent;
   cursor: pointer;
   transition: background var(--dur-fast) var(--ease),
               border-color var(--dur-fast) var(--ease),
@@ -337,19 +331,19 @@
 }
 
 .btn:active {
-  transform: translateY(1px);
+  transform: translateY(var(--active-shift));
 }
 
 .btn--primary {
   background: var(--accent);
-  color: #fff;
+  color: var(--on-accent);
   border-color: var(--accent);
 }
 
 .btn--primary:hover {
   background: var(--accent-ink);
   border-color: var(--accent-ink);
-  color: #fff;
+  color: var(--on-accent);
 }
 
 .btn--ghost {
@@ -364,15 +358,38 @@
   color: var(--accent-ink);
 }
 
-.rating {
+
+/* The h3 remains first in the HTML reading order; its link is the card action. */
+.book-card__title {
+  order: 1;
+  margin-top: auto;
+}
+
+.book-card__title a {
+  display: block;
+  border: var(--border-thin) solid var(--line);
+}
+
+.breadcrumbs__item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.book__specs,
+.book__description {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.form > .btn {
+  align-self: flex-start;
+}
+
+.form__group--rating {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--sp-3);
-}
-
-.rating__item {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--sp-2);
 }

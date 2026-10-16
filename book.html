@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Солярис — BookNest</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 
@@ -91,28 +91,16 @@
       <form class="form" action="/api/reviews" method="post">
         <fieldset class="form__group form__group--rating">
           <legend class="form__legend">Ваша оценка</legend>
-          <div class="rating">
-            <span class="rating__item">
-              <input class="form__check" id="rate-1" name="rating" type="radio" value="1" required>
+          <input class="form__check" id="rate-1" name="rating" type="radio" value="1" required>
               <label class="form__label form__label--inline" for="rate-1">1</label>
-            </span>
-            <span class="rating__item">
-              <input class="form__check" id="rate-2" name="rating" type="radio" value="2">
+          <input class="form__check" id="rate-2" name="rating" type="radio" value="2">
               <label class="form__label form__label--inline" for="rate-2">2</label>
-            </span>
-            <span class="rating__item">
-              <input class="form__check" id="rate-3" name="rating" type="radio" value="3">
+          <input class="form__check" id="rate-3" name="rating" type="radio" value="3">
               <label class="form__label form__label--inline" for="rate-3">3</label>
-            </span>
-            <span class="rating__item">
-              <input class="form__check" id="rate-4" name="rating" type="radio" value="4">
+          <input class="form__check" id="rate-4" name="rating" type="radio" value="4">
               <label class="form__label form__label--inline" for="rate-4">4</label>
-            </span>
-            <span class="rating__item">
-              <input class="form__check" id="rate-5" name="rating" type="radio" value="5">
+          <input class="form__check" id="rate-5" name="rating" type="radio" value="5">
               <label class="form__label form__label--inline" for="rate-5">5</label>
-            </span>
-          </div>
         </fieldset>
         <p class="form__field">
           <label class="form__label" for="review-author">Имя</label>
@@ -122,9 +110,7 @@
           <label class="form__label" for="review-text">Текст отзыва</label>
           <textarea class="form__textarea" id="review-text" name="text" rows="5" required minlength="10" maxlength="1000"></textarea>
         </p>
-        <p class="form__actions">
-          <button class="btn btn--primary" type="submit">Отправить отзыв</button>
-        </p>
+        <button class="btn btn--primary" type="submit">Отправить отзыв</button>
       </form>
     </section>
 

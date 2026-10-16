@@ -16,9 +16,9 @@ html {
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {
-    animation-duration: 0.01ms;
+    animation-duration: var(--reduced-duration);
     animation-iteration-count: 1;
-    transition-duration: 0.01ms;
+    transition-duration: var(--reduced-duration);
   }
 }
 
@@ -56,14 +56,14 @@ button {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-serif);
-  font-weight: 600;
+  font-weight: var(--weight-bold);
   line-height: var(--lh-tight);
   text-wrap: balance;
   color: var(--ink);
 }
 
-h1 { font-size: var(--fs-3xl); letter-spacing: -0.015em; }
-h2 { font-size: var(--fs-2xl); letter-spacing: -0.01em; }
+h1 { font-size: var(--fs-3xl); letter-spacing: var(--tracking-title); }
+h2 { font-size: var(--fs-2xl); letter-spacing: var(--tracking-tight); }
 h3 { font-size: var(--fs-xl); }
 h4 { font-size: var(--fs-lg); font-family: var(--font-sans); }
 
@@ -71,31 +71,28 @@ p {
   text-wrap: pretty;
 }
 
-p + p {
-  margin-top: var(--sp-3);
-}
 
 small { font-size: var(--fs-sm); }
 
-strong { font-weight: 600; }
+strong { font-weight: var(--weight-bold); }
 
 code, kbd, samp, pre {
   font-family: var(--font-mono);
-  font-size: 0.9em;
+  font-size: var(--fs-code);
 }
 
 code:not(pre code) {
   background: var(--surface-2);
-  border: 1px solid var(--line-soft);
+  border: var(--border-thin) solid var(--line-soft);
   border-radius: var(--radius-sm);
-  padding: 0.06em 0.32em;
+  padding: var(--code-pad-y) var(--code-pad-x);
   color: var(--ink-2);
 }
 
 a {
   color: var(--accent);
   text-decoration: none;
-  border-bottom: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  border-bottom: var(--border-thin) solid color-mix(in srgb, var(--accent) var(--link-tint), transparent);
   transition: border-color var(--dur-fast) var(--ease),
               color var(--dur-fast) var(--ease);
 }
@@ -110,8 +107,8 @@ a:hover {
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
+  outline: var(--focus-width) solid var(--accent);
+  outline-offset: var(--focus-offset);
   border-radius: var(--radius-sm);
 }
 
@@ -135,6 +132,6 @@ ol[role="list"] {
 
 hr {
   border: 0;
-  border-top: 1px solid var(--line-soft);
+  border-top: var(--border-thin) solid var(--line-soft);
   margin: var(--sp-5) 0;
 }
